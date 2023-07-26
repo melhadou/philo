@@ -6,7 +6,7 @@
 /*   By: melhadou <melhadou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 19:52:29 by melhadou          #+#    #+#             */
-/*   Updated: 2023/07/20 22:04:54 by melhadou         ###   ########.fr       */
+/*   Updated: 2023/07/26 17:36:06 by melhadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,4 +20,17 @@ int	get_time()
 	if (gettimeofday(&tv, NULL))
 		return (0);
 	return (tv.tv_sec * (int)1000 + tv.tv_usec / 1000);
+}
+
+int	valid_args(char **args)
+{
+	int	i;
+
+	i = -1;
+	while (args[++i])
+	{
+		if (is_number(args[i]))
+			return (0);
+	}
+	return (1);
 }

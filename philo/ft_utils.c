@@ -6,25 +6,22 @@
 /*   By: melhadou <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:54:19 by melhadou          #+#    #+#             */
-/*   Updated: 2023/07/26 17:35:49 by melhadou         ###   ########.fr       */
+/*   Updated: 2023/07/26 21:22:53 by melhadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <unistd.h>
 
 int	ft_isdigit(int c)
 {
 	if (c >= '0' && c <= '9')
-	{
 		return (1);
-	}
 	return (0);
 }
 
 int	ft_atoi(const char *nptr)
 {
-	unsigned long long	n;
+	long	n;
 	int					i;
 	int					sign;
 
@@ -40,26 +37,8 @@ int	ft_atoi(const char *nptr)
 		n = n * 10 + (nptr[i] - '0');
 		if ((n > 2147483647 && sign == 1)
 			|| (n > 2147483648 && sign == -1))
-			return (0);
+			return (-1);
 		i++;
 	}
 	return (n * sign);
-}
-
-int	is_number(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str[i])
-		return (0);
-	if ((str[i] == '+' || str[i] == '-') && str[i + 1] != '\0')
-		i++;
-	while (str[i])
-	{
-		if (!(str[i] >= '0' && str[i] <= '9'))
-			return (0);
-		i++;
-	}
-	return (1);
 }

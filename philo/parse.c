@@ -6,15 +6,16 @@
 /*   By: melhadou <melhadou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 22:33:53 by melhadou          #+#    #+#             */
-/*   Updated: 2023/07/26 21:20:51 by melhadou         ###   ########.fr       */
+/*   Updated: 2023/07/27 10:22:50 by melhadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	get_args(char *av[])
+int	get_args(char **av)
 {
 	int i;
+	char *str;
 
 	i = 1;
 	while (av[i])
@@ -26,14 +27,16 @@ int	get_args(char *av[])
 			return (1);
 		}
 		// checking for non digit values
-		while (*av[i])
+		str = av[i];
+
+		while (*str)
 		{
-			if (!ft_isdigit(*av[i]))
+			if (!ft_isdigit(*str))
 			{
 				printf("Error: Non Numreques value\n");
 				return (1);
 			}
-			av[i]++;
+			str++;
 		}
 		i++;
 	}

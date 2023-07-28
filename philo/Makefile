@@ -6,13 +6,13 @@
 #    By: melhadou <melhadou@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/20 22:04:26 by melhadou          #+#    #+#              #
-#    Updated: 2023/07/27 10:26:47 by melhadou         ###   ########.fr        #
+#    Updated: 2023/07/27 10:50:26 by melhadou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -pthread -g -fsanitize=address 
+CFLAGS = -Wall -Wextra -Werror -pthread  #-g -fsanitize=address 
 PHILO_FILES = utils.c main.c ft_utils.c parse.c
 
 OBJ = $(PHILO_FILES:.c=.o)

@@ -6,7 +6,7 @@
 /*   By: melhadou <melhadou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 19:52:21 by melhadou          #+#    #+#             */
-/*   Updated: 2023/07/27 18:24:32 by melhadou         ###   ########.fr       */
+/*   Updated: 2023/07/28 11:55:27 by melhadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct t_data
 	int time_to_sleep;
 	int nb_eat;
 	pthread_t *tid;
+	size_t start_time;
 	struct t_philos *philos;
 	pthread_mutex_t *forks;
 	pthread_mutex_t prints;
@@ -36,11 +37,12 @@ typedef struct t_philos
 {
 	int philo_id;
 	int nb_eaten;
+	size_t last_time_eat;
 	t_data *data;
 }	t_philos;
 
 /* ************************ Philosophers Functions ******************************* */
-int	get_time();
+size_t	get_time();
 int	ft_atoi(const char *nptr);
 int	ft_isdigit(int c);
 int	get_args(char *av[]);

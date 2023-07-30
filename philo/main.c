@@ -6,7 +6,7 @@
 /*   By: melhadou <melhadou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 20:04:22 by melhadou          #+#    #+#             */
-/*   Updated: 2023/07/30 10:28:49 by melhadou         ###   ########.fr       */
+/*   Updated: 2023/07/30 17:24:18 by melhadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ int	check_nb_eat(t_data *data)
 	i = 0;
 	while (i < data->nb_philo)
 	{
-		if (data->philos[i].nb_eaten > data->nb_eat)
+		if (data->philos[i].nb_eaten >= data->nb_eat)
 			return (i);
 		i++;
 	}
-	return (0);
+	return (-1);
 }
 
 void ft_print_death(t_data *data, int id)
@@ -62,23 +62,26 @@ int	main(int ac, char *av[])
 
 	init_philos(ac, av, &data);
 	start_philos(&data);
-	while (1)
+ while (1)
 	{
 		id = check_death(&data);
 		if (id)
 		{
 			ft_print_death(&data, id);
-			return (1) ;
+			break; // Exit the loop if a philosopher dies
 		}
-		if (data.nb_eat != -1)
+
+		if (data.nb_eat != -1) // Check if meal requirements are enabled
 		{
 			id_eat = check_nb_eat(&data);
-			if (id_eat)
+			if (id_eat != -1)
 			{
 				ft_print_death(&data, id_eat);
-				return (1) ;
+				break; // Exit the loop if a philosopher has met meal requirements
 			}
 		}
+		// Add a delay here to avoid busy-waiting and consuming excessive CPU
+		usleep(1000); // Sleep for 1 millisecond
 	}
 	return (0);
 }

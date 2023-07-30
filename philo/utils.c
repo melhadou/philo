@@ -6,7 +6,7 @@
 /*   By: melhadou <melhadou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 19:52:29 by melhadou          #+#    #+#             */
-/*   Updated: 2023/07/30 10:28:03 by melhadou         ###   ########.fr       */
+/*   Updated: 2023/07/30 17:32:20 by melhadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ void	*print_id(void *arg)
 	t_philos *philo;
 
 	philo = (t_philos *)arg;
+
 	while (1)
 	{
 		pthread_mutex_lock(&philo->data->forks[philo->philo_id - 1]);

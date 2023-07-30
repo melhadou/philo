@@ -6,7 +6,7 @@
 /*   By: melhadou <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:54:19 by melhadou          #+#    #+#             */
-/*   Updated: 2023/07/29 19:18:24 by melhadou         ###   ########.fr       */
+/*   Updated: 2023/07/30 16:50:05 by melhadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,8 @@ int	ft_atoi(const char *nptr)
 
 void	ft_usleep(size_t time)
 {
-	size_t start;
-
+	size_t	start;
 	start = get_time();
-	while (get_time() - start < time)
-		usleep(100);
+	while ((get_time() - start) < time)
+		usleep(1);
 }

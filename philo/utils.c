@@ -6,7 +6,7 @@
 /*   By: melhadou <melhadou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 19:52:29 by melhadou          #+#    #+#             */
-/*   Updated: 2023/07/29 19:20:13 by melhadou         ###   ########.fr       */
+/*   Updated: 2023/07/30 10:28:03 by melhadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ int	mutex_init(t_data *data)
 	return (0);
 }
 
-
 void	*print_id(void *arg)
 {
 	t_philos *philo;
@@ -93,29 +92,17 @@ void	*print_id(void *arg)
 	{
 		pthread_mutex_lock(&philo->data->forks[philo->philo_id - 1]);
 		ft_print_fork(philo);
-		// printf("%zu ms\tphilo %d\thas taken a fork\n",get_time_diff(philo->data->start_time), philo->philo_id);
 		pthread_mutex_lock(&philo->data->forks[philo->philo_id % philo->data->nb_philo]);
 		ft_print_fork(philo);
-		// printf("%zu ms\tphilo %d\thas taken a fork\n",get_time_diff(philo->data->start_time), philo->philo_id);
 		ft_print_eating(philo);
-		// printf("%zu ms\tphilo %d\tis eating\n",get_time_diff(philo->data->start_time), philo->philo_id);
-		// set meals eaten
 		philo->nb_eaten++;
-		// selping for eating
-		pthread_mutex_lock(&philo->data->prints);
 		philo->last_time_eat = get_time();
-		pthread_mutex_unlock(&philo->data->prints);
 		ft_usleep(philo->data->time_to_eat);
 		pthread_mutex_unlock(&philo->data->forks[philo->philo_id - 1]);
 		pthread_mutex_unlock(&philo->data->forks[philo->philo_id % philo->data->nb_philo]);
-
 		ft_print_sleep(philo);
-		// printf("%zu ms\tphilo %d\tis sleeping\n",get_time_diff(philo->data->start_time), philo->philo_id);
-		// selping for sleeping
 		ft_usleep(philo->data->time_to_sleep);
 		ft_print_think(philo);
-		// printf("%zu ms\tphilo %d\tis thinking\n",get_time_diff(philo->data->start_time), philo->philo_id);
-		// chekck time for death
 	}
 	return NULL;
 }
@@ -131,7 +118,7 @@ void	start_philos(t_data *philo)
 		pthread_detach(philo->tid[i]);
 		i += 2;
 	}
-	usleep(50);
+	usleep(100);
 	i = 1;
 	while (i < philo->nb_philo)
 	{

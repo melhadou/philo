@@ -6,42 +6,51 @@
 /*   By: melhadou <melhadou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 20:04:22 by melhadou          #+#    #+#             */
-/*   Updated: 2023/07/29 15:53:30 by melhadou         ###   ########.fr       */
+/*   Updated: 2023/07/30 10:28:49 by melhadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int check_death(t_data *data)
+int	check_death(t_data *data)
 {
 	int i;
 
 	i  = 0;
 	while (i < data->nb_philo)
 	{
-		if (get_time_diff(data->philos[i].last_time_eat)>= (size_t) data->time_to_die)
+		if (get_time_diff(data->philos[i].last_time_eat) >= (size_t)data->time_to_die)
 			return (i);
 		i++;
 	}
 	return (0);
 }
 
-int check_nb_eat(t_data *data)
+int	check_nb_eat(t_data *data)
 {
 	int i;
+
 	i = 0;
 	while (i < data->nb_philo)
 	{
 		if (data->philos[i].nb_eaten > data->nb_eat)
-			return (1);
+			return (i);
 		i++;
 	}
 	return (0);
 }
 
-int main(int ac, char *av[])
+void ft_print_death(t_data *data, int id)
+{
+	pthread_mutex_lock(&data->prints);
+	printf("%zu ms\t%d\t died\n", get_time_diff(data->start_time), id + 1);
+}
+
+int	main(int ac, char *av[])
 {
 	t_data data;
+	int id;
+	int id_eat;
 
 	if (ac != 5 && ac != 6)
 	{
@@ -53,23 +62,22 @@ int main(int ac, char *av[])
 
 	init_philos(ac, av, &data);
 	start_philos(&data);
-	int id;
-	int id_eat;
 	while (1)
 	{
 		id = check_death(&data);
 		if (id)
 		{
-			pthread_mutex_lock(&data.prints);
-			printf("%zu ms\t%d\t died\n", get_time_diff(data.start_time), id + 1);
+			ft_print_death(&data, id);
 			return (1) ;
 		}
-		id_eat = check_nb_eat(&data);
-		if (data.nb_eat != -1 && id_eat)
+		if (data.nb_eat != -1)
 		{
-			pthread_mutex_lock(&data.prints);
-			printf("%zu ms\t%d\t died\n", get_time_diff(data.start_time), id + 1);
-			return (1) ;
+			id_eat = check_nb_eat(&data);
+			if (id_eat)
+			{
+				ft_print_death(&data, id_eat);
+				return (1) ;
+			}
 		}
 	}
 	return (0);

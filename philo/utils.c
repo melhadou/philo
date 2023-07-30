@@ -6,12 +6,11 @@
 /*   By: melhadou <melhadou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 19:52:29 by melhadou          #+#    #+#             */
-/*   Updated: 2023/07/28 12:12:10 by melhadou         ###   ########.fr       */
+/*   Updated: 2023/07/29 19:20:13 by melhadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <pthread.h>
 
 /* GetTime */
 size_t	get_time()
@@ -21,6 +20,11 @@ size_t	get_time()
 	if (gettimeofday(&tv, NULL))
 		return (0);
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+}
+
+size_t	get_time_diff(size_t time)
+{
+	return (get_time() - time);
 }
 
 void	init_philos(int ac, char *av[],t_data *data)
@@ -88,21 +92,29 @@ void	*print_id(void *arg)
 	while (1)
 	{
 		pthread_mutex_lock(&philo->data->forks[philo->philo_id - 1]);
-		printf("%zu ms\tphilo %d\thas taken a fork\n",get_time() - philo->data->start_time, philo->philo_id);
+		ft_print_fork(philo);
+		// printf("%zu ms\tphilo %d\thas taken a fork\n",get_time_diff(philo->data->start_time), philo->philo_id);
 		pthread_mutex_lock(&philo->data->forks[philo->philo_id % philo->data->nb_philo]);
-		printf("%zu ms\tphilo %d\thas taken a fork\n",get_time() - philo->data->start_time, philo->philo_id);
-		printf("%zu ms\tphilo %d\tis eating\n",get_time() - philo->data->start_time, philo->philo_id);
+		ft_print_fork(philo);
+		// printf("%zu ms\tphilo %d\thas taken a fork\n",get_time_diff(philo->data->start_time), philo->philo_id);
+		ft_print_eating(philo);
+		// printf("%zu ms\tphilo %d\tis eating\n",get_time_diff(philo->data->start_time), philo->philo_id);
 		// set meals eaten
 		philo->nb_eaten++;
 		// selping for eating
+		pthread_mutex_lock(&philo->data->prints);
 		philo->last_time_eat = get_time();
-		usleep(philo->data->time_to_eat * 1000);
+		pthread_mutex_unlock(&philo->data->prints);
+		ft_usleep(philo->data->time_to_eat);
 		pthread_mutex_unlock(&philo->data->forks[philo->philo_id - 1]);
 		pthread_mutex_unlock(&philo->data->forks[philo->philo_id % philo->data->nb_philo]);
-		printf("%zu ms\tphilo %d\tis sleeping\n",get_time() - philo->data->start_time, philo->philo_id);
+
+		ft_print_sleep(philo);
+		// printf("%zu ms\tphilo %d\tis sleeping\n",get_time_diff(philo->data->start_time), philo->philo_id);
 		// selping for sleeping
-		usleep(philo->data->time_to_sleep * 1000);
-		printf("%zu ms\tphilo %d\tis thinking\n",get_time() - philo->data->start_time, philo->philo_id);
+		ft_usleep(philo->data->time_to_sleep);
+		ft_print_think(philo);
+		// printf("%zu ms\tphilo %d\tis thinking\n",get_time_diff(philo->data->start_time), philo->philo_id);
 		// chekck time for death
 	}
 	return NULL;
@@ -119,7 +131,7 @@ void	start_philos(t_data *philo)
 		pthread_detach(philo->tid[i]);
 		i += 2;
 	}
-	usleep(300);
+	usleep(50);
 	i = 1;
 	while (i < philo->nb_philo)
 	{

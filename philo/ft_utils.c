@@ -6,11 +6,39 @@
 /*   By: melhadou <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:54:19 by melhadou          #+#    #+#             */
-/*   Updated: 2023/07/26 21:22:53 by melhadou         ###   ########.fr       */
+/*   Updated: 2023/07/29 19:18:24 by melhadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	ft_print_fork(t_philos *philo)
+{
+	pthread_mutex_lock(&philo->data->prints);
+	printf("%zu ms\tphilo %d\thas taken a fork\n",get_time_diff(philo->data->start_time), philo->philo_id);
+	pthread_mutex_unlock(&philo->data->prints);
+}
+
+void	ft_print_sleep(t_philos *philo)
+{
+	pthread_mutex_lock(&philo->data->prints);
+	printf("%zu ms\tphilo %d\tis sleeping\n",get_time_diff(philo->data->start_time), philo->philo_id);
+	pthread_mutex_unlock(&philo->data->prints);
+}
+
+void	ft_print_think(t_philos *philo)
+{
+	pthread_mutex_lock(&philo->data->prints);
+	printf("%zu ms\tphilo %d\tis thinking\n",get_time_diff(philo->data->start_time), philo->philo_id);
+	pthread_mutex_unlock(&philo->data->prints);
+}
+
+void	ft_print_eating(t_philos *philo)
+{
+	pthread_mutex_lock(&philo->data->prints);
+	printf("%zu ms\tphilo %d\tis eating\n",get_time_diff(philo->data->start_time), philo->philo_id);
+	pthread_mutex_unlock(&philo->data->prints);
+}
 
 int	ft_isdigit(int c)
 {
@@ -41,4 +69,13 @@ int	ft_atoi(const char *nptr)
 		i++;
 	}
 	return (n * sign);
+}
+
+void	ft_usleep(size_t time)
+{
+	size_t start;
+
+	start = get_time();
+	while (get_time() - start < time)
+		usleep(100);
 }

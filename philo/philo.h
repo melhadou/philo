@@ -6,7 +6,7 @@
 /*   By: melhadou <melhadou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 19:52:21 by melhadou          #+#    #+#             */
-/*   Updated: 2023/07/28 11:55:27 by melhadou         ###   ########.fr       */
+/*   Updated: 2023/07/29 19:18:57 by melhadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,14 @@ typedef struct t_philos
 }	t_philos;
 
 /* ************************ Philosophers Functions ******************************* */
+
+void	ft_print_sleep(t_philos *philo);
+void	ft_print_eating(t_philos *philo);
+void	ft_print_think(t_philos *philo);
+void	ft_print_fork(t_philos *philo);
+
+void	ft_usleep(size_t time);
+size_t	get_time_diff(size_t time);
 size_t	get_time();
 int	ft_atoi(const char *nptr);
 int	ft_isdigit(int c);

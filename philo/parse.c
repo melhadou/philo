@@ -6,7 +6,7 @@
 /*   By: melhadou <melhadou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 22:33:53 by melhadou          #+#    #+#             */
-/*   Updated: 2023/07/27 10:22:50 by melhadou         ###   ########.fr       */
+/*   Updated: 2023/07/31 15:20:39 by melhadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	get_args(char **av)
 	while (av[i])
 	{
 		// checking for invalid values
-		if (!*av[i] || ft_atoi(av[i]) == -1)
+		if (!*av[i] || ft_atoi(av[i]) == -1 || ft_atoi(av[i]) == 0)
 		{
 			printf("Error: invalid Arguments\n");
 			return (1);

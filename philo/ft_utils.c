@@ -6,37 +6,18 @@
 /*   By: melhadou <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:54:19 by melhadou          #+#    #+#             */
-/*   Updated: 2023/07/30 16:50:05 by melhadou         ###   ########.fr       */
+/*   Updated: 2023/08/02 19:01:42 by melhadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_print_fork(t_philos *philo)
+void	ft_print(t_philos *philo, size_t time, char *str, int state)
 {
 	pthread_mutex_lock(&philo->data->prints);
-	printf("%zu ms\tphilo %d\thas taken a fork\n",get_time_diff(philo->data->start_time), philo->philo_id);
-	pthread_mutex_unlock(&philo->data->prints);
-}
-
-void	ft_print_sleep(t_philos *philo)
-{
-	pthread_mutex_lock(&philo->data->prints);
-	printf("%zu ms\tphilo %d\tis sleeping\n",get_time_diff(philo->data->start_time), philo->philo_id);
-	pthread_mutex_unlock(&philo->data->prints);
-}
-
-void	ft_print_think(t_philos *philo)
-{
-	pthread_mutex_lock(&philo->data->prints);
-	printf("%zu ms\tphilo %d\tis thinking\n",get_time_diff(philo->data->start_time), philo->philo_id);
-	pthread_mutex_unlock(&philo->data->prints);
-}
-
-void	ft_print_eating(t_philos *philo)
-{
-	pthread_mutex_lock(&philo->data->prints);
-	printf("%zu ms\tphilo %d\tis eating\n",get_time_diff(philo->data->start_time), philo->philo_id);
+	printf("%zu ms \t %zu %s\n", time, philo->id, str);
+	if (state)
+		return ;
 	pthread_mutex_unlock(&philo->data->prints);
 }
 
@@ -77,4 +58,38 @@ void	ft_usleep(size_t time)
 	start = get_time();
 	while ((get_time() - start) < time)
 		usleep(1);
+}
+
+int	check_death(t_philos *philo)
+{
+	pthread_mutex_lock(&philo->data->time);
+	if (get_time_diff(philo->last_time_eat) >= philo->data->time_to_die)
+	{
+		philo->data->game_over = 1;
+		ft_print(philo, get_time_diff(philo->data->start_time), "died", 1);
+		return (0);
+	}
+	pthread_mutex_unlock(&philo->data->time);
+	return (1);
+}
+
+void	check_meals(t_data *data)
+{
+	size_t	i;
+
+	i = 0;
+	if (!data->nb_must_eat)
+		return ;
+	pthread_mutex_lock(&data->eat);
+	while (i < data->nb_philo)
+	{
+		if (data->philos[i].nb_eaten < data->nb_must_eat)
+		{
+			pthread_mutex_unlock(&data->eat);
+			return ;
+		}
+		i++;
+	}
+	pthread_mutex_unlock(&data->eat);
+	data->game_over = 1;
 }

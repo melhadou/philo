@@ -1,42 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: melhadou <melhadou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/20 22:33:53 by melhadou          #+#    #+#             */
-/*   Updated: 2023/08/02 19:11:05 by melhadou         ###   ########.fr       */
+/*   Created: 2023/08/02 19:09:36 by melhadou          #+#    #+#             */
+/*   Updated: 2023/08/03 09:10:44 by melhadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-// normed
-int	get_args(char **av)
+void	ft_usleep(size_t time)
 {
-	int		i;
-	char	*str;
+	size_t	start;
 
-	i = 1;
-	while (av[i])
-	{
-		if (!*av[i] || ft_atoi(av[i]) == -1 || ft_atoi(av[i]) == 0)
-		{
-			printf("Error: invalid Arguments\n");
-			return (1);
-		}
-		str = av[i];
-		while (*str)
-		{
-			if (!ft_isdigit(*str))
-			{
-				printf("Error: Non Numreques value\n");
-				return (1);
-			}
-			str++;
-		}
-		i++;
-	}
-	return (0);
+	start = get_time();
+	while ((get_time() - start) < time)
+		usleep(100);
 }

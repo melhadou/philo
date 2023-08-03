@@ -6,12 +6,13 @@
 /*   By: melhadou <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 16:54:19 by melhadou          #+#    #+#             */
-/*   Updated: 2023/08/02 19:01:42 by melhadou         ###   ########.fr       */
+/*   Updated: 2023/08/03 09:11:57 by melhadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+// normed funcs
 void	ft_print(t_philos *philo, size_t time, char *str, int state)
 {
 	pthread_mutex_lock(&philo->data->prints);
@@ -30,9 +31,9 @@ int	ft_isdigit(int c)
 
 int	ft_atoi(const char *nptr)
 {
+	int		i;
+	int		sign;
 	long	n;
-	int					i;
-	int					sign;
 
 	n = 0;
 	i = 0;
@@ -52,14 +53,6 @@ int	ft_atoi(const char *nptr)
 	return (n * sign);
 }
 
-void	ft_usleep(size_t time)
-{
-	size_t	start;
-	start = get_time();
-	while ((get_time() - start) < time)
-		usleep(1);
-}
-
 int	check_death(t_philos *philo)
 {
 	pthread_mutex_lock(&philo->data->time);
@@ -67,6 +60,7 @@ int	check_death(t_philos *philo)
 	{
 		philo->data->game_over = 1;
 		ft_print(philo, get_time_diff(philo->data->start_time), "died", 1);
+		pthread_mutex_unlock(&philo->data->time);
 		return (0);
 	}
 	pthread_mutex_unlock(&philo->data->time);

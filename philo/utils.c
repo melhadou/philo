@@ -6,12 +6,11 @@
 /*   By: melhadou <melhadou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 19:52:29 by melhadou          #+#    #+#             */
-/*   Updated: 2023/08/02 19:04:03 by melhadou         ###   ########.fr       */
+/*   Updated: 2023/08/03 09:10:22 by melhadou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <pthread.h>
 
 /* GetTime */
 size_t	get_time()
@@ -106,15 +105,16 @@ void	*print_id(void *arg)
 		ft_print(philo, get_time_diff(philo->data->start_time), "has taken a fork", 0);
 	
 		ft_print(philo, get_time_diff(philo->data->start_time), "is eating", 0);
+	
 		pthread_mutex_lock(&philo->data->eat);
 		philo->nb_eaten++;
 		pthread_mutex_unlock(&philo->data->eat);
 
+		ft_usleep(philo->data->time_to_eat);
 		pthread_mutex_lock(&philo->data->time);
 		philo->last_time_eat = get_time();
 		pthread_mutex_unlock(&philo->data->time);
-	
-		ft_usleep(philo->data->time_to_eat);
+		
 		pthread_mutex_unlock(&philo->data->forks[philo->id - 1]);
 		pthread_mutex_unlock(&philo->data->forks[philo->id % philo->data->nb_philo]);
 		ft_print(philo, get_time_diff(philo->data->start_time),"is sleping", 0);
